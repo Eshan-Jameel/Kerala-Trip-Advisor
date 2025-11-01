@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala Explorer Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-leaf"></i>
+                <h2>Kerala Explorer</h2>
+                <p>Balanced — friendly & professional. Offline travel assistant for Kerala.</p>
+            </div>
+
+            <div class="search-section">
+                <input type="text" id="sidebar-search-input" placeholder="Search district or topic (e.g., Munnar, beaches)">
+                <p class="tip">Tip: Click a district below for a preview</p>
+            </div>
+
+            <div class="district-list">
+                <h3>Explore districts</h3>
+                <div class="district-grid">
+                    <button class="side-link" data-action="text_reply" data-value="Thiruvananthapuram">Thiruvananthapuram <span class="district-nickname">(Trivandrum)</span></button>
+                    <button class="side-link" data-action="text_reply" data-value="Kollam">Kollam</button>
+                    <button class="side-link" data-action="text_reply" data-value="Pathanamthitta">Pathanamthitta</button>
+                    <button class="side-link" data-action="text_reply" data-value="Alappuzha">Alappuzha <span class="district-nickname">(Alleppey)</span></button>
+                    <button class="side-link" data-action="text_reply" data-value="Kottayam">Kottayam</button>
+                    <button class="side-link" data-action="text_reply" data-value="Idukki">Idukki</button>
+                    <button class="side-link" data-action="text_reply" data-value="Ernakulam">Ernakulam <span class="district-nickname">(Kochi)</span></button>
+                    <button class="side-link" data-action="text_reply" data-value="Thrissur">Thrissur</button>
+                    <button class="side-link" data-action="text_reply" data-value="Palakkad">Palakkad</button>
+                    <button class="side-link" data-action="text_reply" data-value="Malappuram">Malappuram</button>
+                    <button class="side-link" data-action="text_reply" data-value="Kozhikode">Kozhikode <span class="district-nickname">(Calicut)</span></button>
+                    <button class="side-link" data-action="text_reply" data-value="Wayanad">Wayanad</button>
+                    <button class="side-link" data-action="text_reply" data-value="Kannur">Kannur</button>
+                    <button class="side-link" data-action="text_reply" data-value="Kasaragod">Kasaragod</button>
+                </div>
+            </div>
+
+            <div class="district-preview">
+                <h3>District preview</h3>
+                <p>Ask the chatbot about any district, sightseeing, or trip plans. The preview panel shows concise summaries.</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="chat-header">
+                <div class="header-left">
+                    <h1>Kerala Explorer Chat</h1>
+                    <p>Ask about districts, itineraries, hotels, festivals, or travel tips</p>
+                </div>
+                <button id="clear-chat-btn" onclick="showMainMenu()">Clear</button>
+            </header>
+
+            <div class="chat-window" id="chat-window">
+                
+
+<div class="message bot-message">
+                    <p><strong>Kerala Explorer: Namaskaram 👋</strong> — I'm your offline travel assistant. I can suggest itineraries, recommend places, and answer travel questions. Try: "Plan a 3-day trip to Wayanad" or "Best beaches for families".</p>
+                    <div class="quick-replies">
+                        <button class="quick-reply" data-action="explore_all" data-value="Explore Districts">Explore Districts</button>
+                        <button class="quick-reply" data-action="plan_trip_gateway" data-value="Plan a Trip">Plan a Trip</button>
+                        <button class="quick-reply" data-action="top_five" data-value="Top 5 Spots">Top 5 Spots</button>
+                        <button class="quick-reply" data-action="local_tips" data-value="Local Tips">Local Tips</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="user-input" placeholder="Type your message (e.g., 'Tell me about Kannur' or 'Where to see' ">
+                <div class="input-actions">
+                    <select id="quick-actions-dropdown" class="dropdown-button">
+                        <option value="">Quick actions</option>
+                        <option value="explore_all">Explore Districts</option>
+                        <option value="plan_trip_gateway">Plan a Trip</option>
+                        <option value="top_five">Top 5 Spots</option>
+                        <option value="show_travel_challenge">Gody's Challenge</option>
+                        <option value="local_tips">Local Tips</option>
+                        <option value="why_visit">Why Visit Kerala?</option>
+                        <option value="budget_info">Budget Guide</option>
+                        <option value="safety_info">Safety Tips</option>
+                    </select>
+                    <button id="send-btn" class="send-button">Send</button>
+                </div>
+            </div>
+            <div id="context-display" class="context-display">General Kerala</div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Additional event listener for the quick actions dropdown
+        document.getElementById('quick-actions-dropdown').addEventListener('change', function() {
+            const selectedAction = this.value;
+            if (selectedAction) {
+                // Manually trigger the action based on the selected value
+                if (selectedAction === 'why_visit') {
+                    handleGeneralKeralaInfo();
+                } else if (selectedAction === 'budget_info') {
+                    handleBudgetRequest();
+                } else if (selectedAction === 'safety_info') {
+                    handleSafetyRequest();
+                } else {
+                    processAction(selectedAction, selectedAction);
+                }
+                this.value = ''; // Reset dropdown
+            }
+        });
+         // Make the clear button in the header work
+         document.getElementById('clear-chat-btn').addEventListener('click', showMainMenu);
+    </script>
+</body>
+</html>
