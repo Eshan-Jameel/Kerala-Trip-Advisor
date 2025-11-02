@@ -1,0 +1,316 @@
+:root {
+    /* Updated Color Scheme: Soft Mint Green */
+    --color-bg: #FFFFFF;         /* White - Main Background */
+    --color-text: #3A5A53;       /* Dark Teal-Green - Text Color */
+    --color-accent: #3A5A53;      /* Dark Teal-Green - The main accent color */
+    --color-qr-text: #FFFFFF;     /* White - For QR buttons on accent bg */
+
+    /* Sub-shades for depth */
+    --color-panel: #F6FAF9;     /* Hint of Mint - Side Panel / Header */
+    --color-surface: #DFF0EB;     /* Very Light Mint - Cards, input, user bubble */
+}
+
+/* Base Styles for Full-Page App */
+* { box-sizing: border-box; }
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #F6FAF9; /* Use light mint for the page background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: var(--color-text); /* Use main text color */
+}
+
+#app-container {
+    display: flex;
+    width: 90%;
+    max-width: 1100px; 
+    height: 90vh;
+    border-radius: 15px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Softer shadow for light theme */
+    overflow: hidden;
+    background-color: var(--color-bg); /* Use main bg (White) */
+}
+
+/* --- SIDE PANEL STYLING --- */
+#side-panel {
+    width: 300px;
+    background-color: var(--color-panel); 
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--color-surface); /* Use surface color for border */
+}
+
+.panel-title {
+    color: var(--color-accent); /* Use accent */
+    border-bottom: 2px solid var(--color-accent); /* Use accent */
+}
+
+/* Side Links */
+#quick-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* --- FIX: This makes the side panel list scrollable --- */
+    flex-grow: 1;
+    overflow-y: auto;
+    /* --- */
+}
+.side-link {
+    background: var(--color-surface); 
+    color: var(--color-text);
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    padding: 12px;
+    text-align: left;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0; /* Prevents shrinking */
+}
+.side-link:hover {
+    background: var(--color-accent); /* Use accent */
+    color: #FFF;
+}
+/* Style for the subtitles in the side panel (Plan Your Trip, etc.) */
+.panel-subtitle {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: var(--color-text);
+    opacity: 0.7;
+    font-weight: 700;
+}
+
+/* Context Info */
+#context-info {
+    margin-top: auto; /* Pushes to the bottom */
+    padding-top: 15px;
+    border-top: 1px solid var(--color-surface);
+    flex-shrink: 0; /* Prevents this from shrinking */
+}
+#context-info h3 {
+    margin: 0 0 5px 0;
+}
+#context-display {
+    color: var(--color-accent); /* Use accent */
+    font-weight: 500;
+}
+
+/* --- MAIN CHAT CONTENT STYLING --- */
+#main-content { 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column; 
+    background-color: var(--color-bg); /* Use main bg */
+}
+
+/* Header Styling */
+#chatbot-header {
+    background-color: var(--color-panel); /* Use panel color */
+    color: var(--color-text);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--color-surface);
+}
+.avatar { 
+    background-color: var(--color-accent); /* Use accent */
+    color: var(--color-bg); /* Use main bg color (White) for text */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-right: 15px;
+}
+#chatbot-header h1 {
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 700;
+}
+#menu-btn { 
+    background: var(--color-surface); 
+    color: var(--color-text); 
+    border: none;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+    cursor: pointer;
+}
+#menu-btn:hover { 
+    background-color: var(--color-accent); /* Use accent */
+    color: #FFF;
+}
+
+/* Chat Window & Messages */
+#chat-window {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto; /* --- PRESERVED: This is the chat scrolling --- */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.message { 
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Lighter shadow for light theme */
+    line-height: 1.5;
+}
+.message p { margin: 0; }
+.message ul {
+    margin: 10px 0 0 0;
+    padding-left: 20px;
+}
+.message li { margin-bottom: 5px; }
+
+
+.user-message {
+    background-color: var(--color-surface); /* Light Mint bubble */
+    color: var(--color-text); /* Dark Mint text */
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.bot-message {
+    background-color: var(--color-accent); /* Dark Mint Bot Bubble */
+    color: #FFF; /* White text */
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+
+/* Rich Card Styling */
+.rich-card {
+    background-color: var(--color-surface); /* Use consistent surface color */
+    color: var(--color-text);
+    border: 1px solid var(--color-accent); /* Border helps it pop */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+    border-radius: 12px;
+    padding: 15px;
+    max-width: 90%;
+}
+.card-title { 
+    color: var(--color-accent); /* Use accent */
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+}
+.card-rating { 
+    color: var(--color-accent); /* Use accent */
+    font-weight: 700;
+}
+.rich-card p {
+    margin: 5px 0;
+}
+
+/* Quick Replies */
+.quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+/* --- FIX: Default quick reply buttons (inside bot message) --- */
+.quick-reply {
+    background-color: transparent; 
+    color: var(--color-qr-text); /* White text (visible on dark mint) */
+    border: 1px solid var(--color-qr-text); /* White border */
+    border-radius: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.quick-reply:hover {
+    background-color: var(--color-qr-text); /* White background */
+    color: var(--color-accent); /* Dark Mint text */
+}
+
+/* Quick replies inside a rich-card (which has a light background) */
+.rich-card .quick-reply {
+    background-color: var(--color-accent); /* Dark Mint background */
+    color: #FFF; /* White text */
+    border-color: var(--color-accent); /* Dark Mint border */
+}
+.rich-card .quick-reply:hover {
+    background-color: #2E4A43; /* Darker accent */
+    border-color: #2E4A43;
+}
+
+
+/* Input Styling */
+#chatbot-input {
+    border-top: 1px solid var(--color-surface);
+    background-color: var(--color-bg);
+    padding: 15px 20px;
+    display: flex;
+    gap: 10px;
+}
+
+#user-input {
+    flex-grow: 1;
+    border: 1px solid var(--color-surface);
+    background: var(--color-surface);
+    color: var(--color-text);
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+}
+#user-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+#send-btn { 
+    background-color: var(--color-accent); /* Use accent */
+    color: #FFF;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#send-btn:hover { background-color: #2E4A43; } /* Darker accent */
+
+/* Typing Indicator */
+.typing-indicator-wrapper {
+    padding: 15px 20px;
+}
+.typing-indicator { display: flex; gap: 5px; align-items: center; }
+.typing-dot {
+    width: 8px; height: 8px;
+    background-color: #FFF;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: typing-bounce 1s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+}
+
+
+/* Media Query for Mobile Responsiveness */
+@media (max-width: 800px) {
+    #side-panel { display: none; }
+    #app-container { width: 100%; height: 100vh; border-radius: 0; }
+    #chatbot-header { padding: 10px 15px; }
+    #user-input { padding: 10px 15px; }
+    #send-btn { width: 44px; height: 44px; }
+    #chatbot-input { padding: 10px; }
+}

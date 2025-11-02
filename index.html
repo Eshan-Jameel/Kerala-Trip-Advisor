@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanchari: Your Kerala Travel Guide</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app-container">
+        <div id="side-panel">
+            <h2 class="panel-title">Kerala Discovery</h2>
+            <div id="quick-links">
+                <button class="side-link" data-action="explore_all">🗺️ Explore All 14 Districts</button>
+                
+                <h3 class="panel-subtitle">Plan Your Trip</h3>
+                <button class="side-link" data-action="plan_trip_gateway">🗓️ Trip Planner Gateway</button>
+                <button class="side-link" data-action="plan_by_vibe">✨ Plan by Vibe</button>
+                <button class="side-link" data-action="ask_travel_month">📅 When are you visiting?</button>
+                
+                <h3 class="panel-subtitle">Local Expert</h3>
+                <button class="side-link" data-action="ask_hidden_gem">💎 Sanchari's Hidden Gems</button>
+                <button class="side-link" data-action="local_tips">🥘 Local Food & Tips</button>
+
+                <h3 class="panel-subtitle">My Trip</h3>
+                <button class="side-link" data-action="current_trip">⭐ My Itinerary</button>
+                <button class="side-link" data-action="show_travel_challenge">🏆 Sanchari's Travel Challenge</button>
+            </div>
+
+            <div id="context-info">
+                <h3>Current Focus</h3>
+                <p id="context-display">Ready to begin...</p>
+            </div>
+        </div>
+
+        <div id="main-content">
+            <header id="chatbot-header">
+                <span class="avatar">✨</span>
+                <h1>Sanchari</h1>
+                <button id="menu-btn" title="Main Menu">🏠</button>
+            </header>
+
+            <div id="chat-window">
+                <div class="message bot-message">
+                    <p>Welcome! I'm Sanchari, your personal guide to God's Own Country. How can I assist your journey?</p>
+                    <div class="quick-replies">
+                        <button class="quick-reply" data-action="explore_all">Explore Districts</button>
+                        <button class="quick-reply" data-action="plan_trip_gateway">Plan a Trip</button>
+                        <button class="quick-reply" data-action="top_five">Top 5 Spots</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chatbot-input">
+                <input type="text" id="user-input" placeholder="Ask 'Hidden gem in Idukki', 'Vibe', or 'Plan a trip'...">
+                <button id="send-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
