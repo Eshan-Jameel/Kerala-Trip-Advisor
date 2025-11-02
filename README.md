@@ -1,7 +1,7 @@
 # Sanchari - Kerala Travel Guide
 > Your personal guide to God's Own Country.
 
-![Sanchari Chatbot Screenshot](https://drive.google.com/file/d/1mMbRXBkjBzVM5kfVmdsuyufqxPpDX9Dq/view?usp=drive_link)
+![Sanchari Chatbot Screenshot]("C:\Users\HP\Pictures\Screenshots\Screenshot 2025-11-02 151335.png")
 
 Sanchari (meaning "Traveler" in Malayalam) is a web-based, front-end chatbot designed to be a comprehensive, one-stop guide for planning a trip to Kerala, India. It's built with pure, lightweight HTML, CSS, and Vanilla JavaScript—no external libraries or frameworks.
 
