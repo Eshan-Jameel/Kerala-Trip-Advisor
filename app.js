@@ -423,6 +423,13 @@ function getBotResponse(userText) {
     showTypingIndicator();
     const lowerText = userText.toLowerCase();
 
+    // === FIX START ===
+    // We must find a potential placeMatch *before* checking intents
+    // This allows intents to be smart about place names.
+    let placeMatch = findPlaceByName(lowerText);
+    const districtFromPlace = placeMatch ? KERALA_DATA_MOCK.districts.find(d => d.id === placeMatch.districtId) : null;
+    // === FIX END ===
+
     setTimeout(() => {
         hideTypingIndicator();
         // Intent Keywords (condensed)
@@ -454,41 +461,58 @@ function getBotResponse(userText) {
             processAction('plan_by_vibe', 'plan_by_vibe');
             return;
         }
+        
+        // === NEW/UPDATED ITINERARY INTENT ===
         if (hasIntent('ITINERARY')) {
+            // Check for a specific district or place in the query
+            let districtMatch = findDistrictInText(lowerText) || districtFromPlace;
+            if (districtMatch) {
+                handleDistrictTripPlan(districtMatch);
+                return;
+            }
+            // Existing logic for generic day counts
             if (lowerText.includes('3')) { showItinerary("3_day"); return; }
             if (lowerText.includes('5')) { showItinerary("5_day"); return; }
             if (lowerText.includes('7')) { showItinerary("7_day"); return; }
+            // Fallback to the main planning gateway
             processAction("plan_trip_gateway", "plan_trip_gateway");
             return;
         }
+        
+        // === FIX START: This logic is now smarter ===
         if (hasIntent('GEM')) {
-            let districtMatch = findDistrictInText(lowerText) || userContext.lastDistrict;
+            let districtMatch = findDistrictInText(lowerText) || districtFromPlace || userContext.lastDistrict;
             if (districtMatch) { handleHiddenGem(districtMatch); } else { processAction('ask_hidden_gem', 'ask_hidden_gem'); }
             return;
         }
         if (hasIntent('CHALLENGE')) { handleTravelChallenge(); return; }
         if (hasIntent('HOTEL')) {
-            let districtMatch = findDistrictInText(lowerText) || userContext.lastDistrict;
+            let districtMatch = findDistrictInText(lowerText) || districtFromPlace || userContext.lastDistrict;
             if (districtMatch) { handleHotelRequest(districtMatch); } else { appendMessage("Sure, for which district?", 'bot-message'); }
             return;
         }
 
-        let placeMatch = findPlaceByName(lowerText);
         if (hasIntent('NEARBY') && placeMatch) { handleNearbyPlaces(placeMatch.place); return; }
 
         if (hasIntent('TRANSPORT')) {
-            let districtMatch = findDistrictInText(lowerText) || (placeMatch && KERALA_DATA_MOCK.districts.find(d => d.id === placeMatch.districtId)) || userContext.lastDistrict;
+            let districtMatch = findDistrictInText(lowerText) || districtFromPlace || userContext.lastDistrict;
             if (districtMatch) { handleTransportRequest(districtMatch); } else { appendMessage("I can provide travel info. For which destination?", 'bot-message'); }
             return;
         }
-        if (hasIntent('TIPS')) { handleLocalTipsRequest(findDistrictInText(lowerText) || userContext.lastDistrict); return; }
+        if (hasIntent('TIPS')) {
+            let districtMatch = findDistrictInText(lowerText) || districtFromPlace || userContext.lastDistrict;
+            handleLocalTipsRequest(districtMatch); 
+            return; 
+        }
+        // === FIX END ===
 
+        // === THIS HANDLES "Tell me about [District]" ===
         let districtMatch = findDistrictInText(lowerText);
         if (districtMatch) { updateContext(`Exploring ${districtMatch.name}`, districtMatch); showDistrictCard(districtMatch); return; }
+        // === THIS HANDLES "Tell me about [Place]" ===
         if (placeMatch) { const district = KERALA_DATA_MOCK.districts.find(d => d.id === placeMatch.districtId); updateContext(`About ${placeMatch.place.name}`, district); showPlaceCard(placeMatch.place, district); return; }
 
         // --- Fallback ---
-        // We will keep your general inquiry logic as a placeholder here
         handleGeneralInquiry(lowerText);
 
     }, 1000);
@@ -794,6 +818,38 @@ function handleTravelChallenge() {
 // ==============================================================================
 // 10. STANDARD HANDLER & SUPPORT FUNCTIONS
 // ==============================================================================
+
+// === NEW FUNCTION TO HANDLE DISTRICT-SPECIFIC TRIP PLANS ===
+function handleDistrictTripPlan(district) {
+    updateContext(`Planning trip to ${district.name}`, district);
+    
+    // Get top 2-3 places from the district's data
+    const places = district.places.slice(0, 3);
+    
+    if (places.length < 2) {
+        // Handle districts with few listed places
+        const placeName = places.length > 0 ? places[0].name : "the main town";
+        appendMessage(`**${district.name}** is a great choice! I recommend visiting **${placeName}**.`, 'bot-message');
+        if (places.length > 0) {
+            appendQuickReplies([ { text: `Add ${places[0].name} to Trip`, action: "add_to_trip", value: places[0].name } ]);
+        }
+        return;
+    }
+
+    const plan = [
+        `**Day 1:** Arrive and explore **${places[0].name}**.`,
+        `**Day 2:** Visit **${places[1].name}**` + (places[2] ? ` and **${places[2].name}**.` : '.')
+    ];
+
+    const botResponse = `Here's a simple 2-day plan for **${district.name}**:<ul>${plan.map(step => `<li>${step}</li>`).join('')}</ul><br>You can ask me about these places to add them to your trip!`;
+    appendMessage(botResponse, 'bot-message');
+    appendQuickReplies([
+        { text: `Add ${places[0].name} to Trip`, action: "add_to_trip", value: places[0].name },
+        { text: `Find Hotels in ${district.name}`, action: "find_hotels", value: district.id },
+        { text: "Plan a different trip", action: "plan_trip_gateway" }
+    ]);
+}
+
 function handleHotelRequest(district) {
     // === UPDATED FUNCTION ===
     let botResponse = `I don't have specific hotel listings for **${district.name}** yet, but it's known for ${district.theme.toLowerCase()}.`;
